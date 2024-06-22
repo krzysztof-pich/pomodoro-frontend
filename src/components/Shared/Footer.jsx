@@ -1,8 +1,10 @@
+import {BottomNavigation} from "@mui/material";
+
 const Footer = () => {
     return (
-        <footer>
+        <BottomNavigation>
             <p>Author: Krzysztof Pich</p>
-        </footer>
+        </BottomNavigation>
     )
 }
 
