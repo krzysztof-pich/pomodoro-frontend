@@ -1,10 +1,10 @@
-import {BottomNavigation} from "@mui/material";
+import { Box } from "@mui/material";
 
 const Footer = () => {
     return (
-        <BottomNavigation>
+        <Box display="flex" justifyContent="center">
             <p>Author: Krzysztof Pich</p>
-        </BottomNavigation>
+        </Box>
     )
 }
 
