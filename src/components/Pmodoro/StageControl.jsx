@@ -1,7 +1,14 @@
 import {Box, ButtonGroup} from "@mui/material";
 import Button from "@mui/material/Button";
+import PropTypes from "prop-types";
 
-const StageControl = () => {
+const StageControl = ({stage, stageButtonClick}) => {
+    const stageButtons = [
+        { name: 'work', label: 'Work'},
+        { name: 'short_break', label: 'Short break' },
+        { name: 'long_break', label: 'Long break' },
+    ];
+
     return (
         <div style={{width: '100%'}}>
             <Box
@@ -13,16 +20,24 @@ const StageControl = () => {
                     borderRadius: 1,
                 }}
             >
-                <Button variant="outlined">Work</Button>
-                <Button variant="outlined">Short break</Button>
-                <Button variant="outlined">Long break</Button>
+                {
+                    stageButtons.map((stageItem) =>
+                        <Button
+                            key={stageItem.name}
+                            onClick={stageButtonClick(stageItem.name)}
+                            variant={stageItem.name === stage ? "contained" : "outlined"}>
+                                {stageItem.label}
+                        </Button>
+                    )
+                }
             </Box>
         </div>
     );
+}
 
-
-
-
+StageControl.propTypes = {
+    stage: PropTypes.string,
+    stageButtonClick: PropTypes.func,
 }
 
 export default StageControl
