@@ -1,24 +1,46 @@
 import Button from "@mui/material/Button";
 import {Box} from "@mui/material";
+import PropTypes from "prop-types";
 
-const TimerControl = () => {
+const TimerControl = ({actions, actionButtonClick}) => {
+    const actionButtons = [
+        { name: 'start', label: 'Start', visibility: ['stop', 'pause'] },
+        { name: 'pause', label: 'Pause', visibility: ['start'] },
+        { name: 'stop', label: 'Stop', visibility: ['start', 'pause'] },
+    ]
+
+    const action = (actions) => {
+        return 'start';
+    };
+
     return (
         <div style={{width: '100%'}}>
             <Box
                 sx={{
                     display: 'flex',
-                    justifyContent: 'space-between',
-                    p: 1,
-                    m: 1,
-                    borderRadius: 1,
+                    justifyContent: 'center',
+                    columnGap: '10px'
                 }}
             >
-                <Button variant="outlined">start</Button>
-                <Button variant="outlined">pause</Button>
-                <Button variant="outlined">stop</Button>
+                {
+                    actionButtons.filter((actionItem) => actionItem.visibility.includes(action())).map((actionItem) =>
+                        <Button
+                            key={actionItem.name}
+                            onClick={actionButtonClick(actionItem.name)}
+                            variant="outlined"
+                            >
+                            {actionItem.label}
+                        </Button>
+                    )
+                }
             </Box>
         </div>
     );
 }
+
+TimerControl.propTypes = {
+    actions: PropTypes.array,
+    actionButtonClick: PropTypes.func
+};
 
 export default TimerControl

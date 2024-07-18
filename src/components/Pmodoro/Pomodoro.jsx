@@ -14,11 +14,21 @@ const Pomodoro = () => {
         setStage(newStage);
     };
 
+    const handleActionClick = (newAction) => (e) => {
+        console.log('action click', newAction);
+    }
+
     return (
         <Box className="pomodoro-content" sx={{ flexDirection: "column" }} display="flex" justifyContent="center" alignItems="center" minHeight="100px">
-            <StageControl stage={stage} stageButtonClick={handleStageClick} />
+            <StageControl
+                stage={stage}
+                stageButtonClick={handleStageClick}
+            />
             <Timer />
-            <TimerControl />
+            <TimerControl
+                actions={actions}
+                actionButtonClick={handleActionClick}
+            />
         </Box>
     )
 }
