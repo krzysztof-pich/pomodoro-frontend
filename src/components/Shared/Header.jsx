@@ -3,15 +3,13 @@ import AvTimerIcon from '@mui/icons-material/AvTimer';
 
 const Header = () => {
     return (
-        <Box sx={{flexGrow: 1}}>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton><AvTimerIcon/></IconButton>
-                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                        Pomodoro
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+        <Box className="pomodoro-header">
+            <Toolbar>
+                <IconButton><AvTimerIcon/></IconButton>
+                <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                    Pomodoro
+                </Typography>
+            </Toolbar>
         </Box>
     )
 }

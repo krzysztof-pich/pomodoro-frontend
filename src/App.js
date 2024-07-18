@@ -1,8 +1,8 @@
-
 import Header from "./components/Shared/Header";
 import Footer from "./components/Shared/Footer";
 import Pomodoro from "./components/Pmodoro/Pomodoro";
-import {Container, createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import {Box, Container, createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import './structure.css';
 
 function App() {
     const darkTheme = createTheme({
@@ -10,14 +10,15 @@ function App() {
             mode: "dark"
         }
     })
+
     return (
         <ThemeProvider theme={darkTheme}>
-            <CssBaseline />
-            <Container>
-                <Header/>
-                <Pomodoro/>
-                <Footer/>
-            </Container>
+            <CssBaseline/>
+            <div className="pomodoro-container">
+                <Header />
+                <Pomodoro />
+                <Footer />
+            </div>
         </ThemeProvider>
     );
 }
