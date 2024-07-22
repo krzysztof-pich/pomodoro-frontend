@@ -3,7 +3,7 @@ import AvTimerIcon from '@mui/icons-material/AvTimer';
 
 const Header = () => {
     return (
-        <Box className="pomodoro-header">
+        <Box component="header" className="pomodoro-header">
             <Toolbar>
                 <IconButton><AvTimerIcon/></IconButton>
                 <Typography variant="h6" component="div" sx={{flexGrow: 1}}>

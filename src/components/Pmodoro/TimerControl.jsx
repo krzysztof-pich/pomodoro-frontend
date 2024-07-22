@@ -10,7 +10,9 @@ const TimerControl = ({actions, actionButtonClick}) => {
     ]
 
     const action = (actions) => {
-        return 'start';
+        if (!actions) {
+            return 'stop';
+        }
     };
 
     return (
@@ -23,12 +25,13 @@ const TimerControl = ({actions, actionButtonClick}) => {
                 }}
             >
                 {
-                    actionButtons.filter((actionItem) => actionItem.visibility.includes(action())).map((actionItem) =>
+                    actionButtons.map((actionItem) =>
                         <Button
                             key={actionItem.name}
                             onClick={actionButtonClick(actionItem.name)}
+                            sx={actionItem.visibility.includes(action()) ? {} : { display: 'none' } }
                             variant="outlined"
-                            >
+                        >
                             {actionItem.label}
                         </Button>
                     )
