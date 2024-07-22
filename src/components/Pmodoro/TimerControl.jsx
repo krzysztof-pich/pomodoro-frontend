@@ -9,10 +9,12 @@ const TimerControl = ({actions, actionButtonClick}) => {
         { name: 'stop', label: 'Stop', visibility: ['start', 'pause'] },
     ]
 
-    const action = (actions) => {
-        if (!actions) {
+    const action = () => {
+        if (actions.length < 1) {
             return 'stop';
         }
+
+        return actions[actions.length - 1].action;
     };
 
     return (
