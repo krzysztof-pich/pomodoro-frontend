@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import TimerControl from './TimerControl';
 
-describe('<TimeControl />', () => {
+describe('<TimeControl /> buttons visibility', () => {
     test('render controls on empty actions', async () => {
         const actionButtonClick = jest.fn();
         const actions = [];
@@ -47,5 +48,50 @@ describe('<TimeControl />', () => {
         expect(startButton).toBeVisible();
         expect(stopButton).toBeVisible();
         expect(pauseButton).not.toBeVisible();
+    });
+});
+describe('<TimeControl /> buttons click', () => {
+    test('click start button', async () => {
+        let actionClicked = '';
+        const actionButtonClick = jest.fn((stage) => e => {
+            actionClicked = stage;
+        });
+
+
+        render(
+            <TimerControl
+                actions={[]}
+                actionButtonClick={actionButtonClick}
+            />
+        );
+
+        const user = userEvent.setup();
+        const startButton = screen.getByText('Start');
+        await user.click(startButton);
+        expect(actionClicked).toMatch('start');
+    });
+
+    test('click pause and stop button', async () => {
+        let actionClicked = '';
+        const actionButtonClick = jest.fn((stage) => e => {
+            actionClicked = stage;
+        });
+
+        render(
+            <TimerControl
+                actions={[{action: 'start', time: new Date().toString()}]}
+                actionButtonClick={actionButtonClick}
+            />
+        );
+
+        const user = userEvent.setup();
+
+        const stopButton = screen.getByText('Stop');
+        await user.click(stopButton);
+        expect(actionClicked).toMatch('stop');
+
+        const pauseButton = screen.getByText('Pause');
+        await user.click(pauseButton);
+        expect(actionClicked).toMatch('pause');
     });
 });
