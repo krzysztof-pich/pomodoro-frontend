@@ -12,10 +12,13 @@ const Pomodoro = () => {
         console.log('click stage', newStage);
         e.preventDefault();
         setStage(newStage);
+        const newActions = [...actions, {action: 'stop', time: new Date().toString()}]
+        setActions(newActions);
     };
 
     const handleActionClick = (newAction) => (e) => {
         console.log('action click', newAction);
+        e.preventDefault();
         const newActions = [...actions, {action: newAction, time: new Date().toString()}]
         setActions(newActions);
     }
