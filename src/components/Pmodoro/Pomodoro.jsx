@@ -16,6 +16,8 @@ const Pomodoro = () => {
 
     const handleActionClick = (newAction) => (e) => {
         console.log('action click', newAction);
+        const newActions = [...actions, {action: newAction, time: new Date().toString()}]
+        setActions(newActions);
     }
 
     return (
