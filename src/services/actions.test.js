@@ -42,9 +42,8 @@ describe('Actions testing', () => {
 
     test('Missing arguments cause error throw', () => {
         expect(() => updateActionsArray([])).toThrow('Invalid argument');
-        // todo - uncomment after actions configuration developed and tested
-        // expect(() => updateActionsArray([], 'x')).toThrow('Invalid argument');
-        // expect(() => updateActionsArray([], 'start')).toThrow('Invalid argument');
-        // expect(() => updateActionsArray([], 'start', 'x')).toThrow('Invalid argument');
+        expect(() => updateActionsArray([], 'x')).toThrow('Invalid argument');
+        expect(() => updateActionsArray([], 'start')).toThrow('Invalid argument');
+        expect(() => updateActionsArray([], 'start', 'x')).toThrow('Invalid argument');
     })
 })
