@@ -10,7 +10,7 @@ jest.mock('../../services/configuration', () => ({
 }));
 
 describe('<Timer /> timer rendering on different stages', () => {
-    test('render work timer', () => {
+    test('render work timer on empty actions', () => {
         getWorkTimeInMinutes.mockReturnValue(25);
         render(
              <Timer
@@ -46,3 +46,24 @@ describe('<Timer /> timer rendering on different stages', () => {
         expect(timer).toBeInTheDocument();
     });
 });
+
+describe('<Timer /> timer started and counting down', () => {
+    beforeAll(() => {
+        jest.useFakeTimers('modern');
+        jest.setSystemTime(new Date('2024-07-22T12:34:56Z'));
+    });
+
+    test('render started work timer', () => {
+        getWorkTimeInMinutes.mockReturnValue(25);
+
+        render(
+            <Timer
+                stage={'work'}
+                actions={[{action: 'start', time: '2024-07-22T12:29:56Z'}]}
+            />
+        );
+
+        const timer = screen.getByText('20:00');
+        expect(timer).toBeInTheDocument();
+    });
+})
