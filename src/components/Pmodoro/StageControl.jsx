@@ -1,13 +1,10 @@
 import {Box, ButtonGroup} from "@mui/material";
 import Button from "@mui/material/Button";
 import PropTypes from "prop-types";
+import {getStages} from "../../services/configuration";
 
 const StageControl = ({stage, stageButtonClick}) => {
-    const stageButtons = [
-        { name: 'work', label: 'Work'},
-        { name: 'short_break', label: 'Short break' },
-        { name: 'long_break', label: 'Long break' },
-    ];
+    const stageButtons = getStages();
 
     return (
         <div style={{width: '100%'}}>

@@ -1,13 +1,10 @@
 import Button from "@mui/material/Button";
 import {Box} from "@mui/material";
 import PropTypes from "prop-types";
+import {getActions} from "../../services/configuration";
 
 const TimerControl = ({actions, actionButtonClick}) => {
-    const actionButtons = [
-        { name: 'start', label: 'Start', visibility: ['stop', 'pause'] },
-        { name: 'pause', label: 'Pause', visibility: ['start'] },
-        { name: 'stop', label: 'Stop', visibility: ['start', 'pause'] },
-    ]
+    const actionButtons = getActions();
 
     const action = () => {
         if (actions.length < 1) {

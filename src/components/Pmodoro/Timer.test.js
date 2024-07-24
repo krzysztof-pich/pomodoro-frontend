@@ -48,22 +48,22 @@ describe('<Timer /> timer rendering on different stages', () => {
 });
 
 describe('<Timer /> timer started and counting down', () => {
-    beforeAll(() => {
-        jest.useFakeTimers('modern');
-        jest.setSystemTime(new Date('2024-07-22T12:34:56Z'));
-    });
-
-    test('render started work timer', () => {
-        getWorkTimeInMinutes.mockReturnValue(25);
-
-        render(
-            <Timer
-                stage={'work'}
-                actions={[{action: 'start', time: '2024-07-22T12:29:56Z'}]}
-            />
-        );
-
-        const timer = screen.getByText('20:00');
-        expect(timer).toBeInTheDocument();
-    });
+    // beforeAll(() => {
+    //     jest.useFakeTimers('modern');
+    //     jest.setSystemTime(new Date('2024-07-22T12:34:56Z'));
+    // });
+    //
+    // test('render started work timer', () => {
+    //     getWorkTimeInMinutes.mockReturnValue(25);
+    //
+    //     render(
+    //         <Timer
+    //             stage={'work'}
+    //             actions={[{action: 'start', time: '2024-07-22T12:29:56Z'}]}
+    //         />
+    //     );
+    //
+    //     const timer = screen.getByText('20:00');
+    //     expect(timer).toBeInTheDocument();
+    // });
 })

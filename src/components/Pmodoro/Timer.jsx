@@ -1,14 +1,24 @@
+/**
+ * @typedef {import('../../typedefs').ActionLog} ActionLog
+ */
+
 import {getWorkTimeInMinutes, getShortBreakTimeInMinutes, getLongBreakTimeInMinutes} from "../../services/configuration";
+
+
 
 /**
  *
  * @param {string} stage
- * @param {actions: {action: string, time: string}} actions
+ * @param {ActionLog[]} actions
  * @returns {JSX.Element}
  * @constructor
  */
 const Timer = ({stage, actions}) => {
     const getTimeLeft = () => {
+        if (actions.length > 0) {
+            const lastElement = actions[actions.length - 1];
+        }
+
         switch (stage) {
             case 'work':
                 return getWorkTimeInMinutes() + ':00';
@@ -19,6 +29,8 @@ const Timer = ({stage, actions}) => {
             default:
                 throw new Error('Stage is not know');
         }
+
+
     };
 
     return <p style={{fontSize: "45px"}}>{getTimeLeft()}</p>
