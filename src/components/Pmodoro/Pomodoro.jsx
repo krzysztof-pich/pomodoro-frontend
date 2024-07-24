@@ -15,13 +15,13 @@ const Pomodoro = () => {
         e.preventDefault();
 
         setStage(newStage);
-        setActions(updateActionsArray(actions, 'stop'));
+        setActions(updateActionsArray(actions, 'stop', stage));
     };
 
     const handleActionClick = (newAction) => (e) => {
         e.preventDefault();
 
-        setActions( updateActionsArray(actions, newAction));
+        setActions( updateActionsArray(actions, newAction, stage));
     }
 
     return (
