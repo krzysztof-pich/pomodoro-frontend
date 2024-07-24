@@ -12,18 +12,16 @@ const Pomodoro = () => {
     const [actions, setActions] = useState([]);
 
     const handleStageClick = (newStage) => (e) => {
-        console.log('click stage', newStage);
         e.preventDefault();
+
         setStage(newStage);
-        const newActions = updateActionsArray(actions, 'stop');
-        setActions(newActions);
+        setActions(updateActionsArray(actions, 'stop'));
     };
 
     const handleActionClick = (newAction) => (e) => {
-        console.log('action click', newAction);
         e.preventDefault();
-        const newActions = updateActionsArray(actions, newAction);
-        setActions(newActions);
+
+        setActions( updateActionsArray(actions, newAction));
     }
 
     return (
@@ -32,7 +30,10 @@ const Pomodoro = () => {
                 stage={stage}
                 stageButtonClick={handleStageClick}
             />
-            <Timer />
+            <Timer
+                stage={stage}
+                actions={actions}
+            />
             <TimerControl
                 actions={actions}
                 actionButtonClick={handleActionClick}
