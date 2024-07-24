@@ -27,3 +27,10 @@ export function updateActionsArray(actions, newAction, stage) {
 
     return [...actions, {action: newAction, time: new Date().toISOString(), stage}];
 }
+
+/**
+ *
+ * @param {ActionLog[]} actions
+ * @returns {Pomodoro[]}
+ */
+export function getPomodorsFromActions(actions) { return[]; }

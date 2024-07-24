@@ -1,4 +1,4 @@
-import {updateActionsArray} from "./actions";
+import {getPomodorsFromActions, updateActionsArray} from "./actions";
 
 describe('Actions testing', () => {
     beforeAll(() => {
@@ -47,3 +47,9 @@ describe('Actions testing', () => {
         expect(() => updateActionsArray([], 'start', 'x')).toThrow('Invalid argument');
     })
 })
+
+describe('Pomodoro testing', () => {
+    test('get pomodoros from empty actions', () => {
+        expect(getPomodorsFromActions([])).toEqual([]);
+    });
+});
