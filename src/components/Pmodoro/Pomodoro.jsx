@@ -15,7 +15,7 @@ const Pomodoro = () => {
         e.preventDefault();
 
         setStage(newStage);
-        setActions(updateActionsArray(actions, 'stop', stage));
+        setActions(updateActionsArray(actions, 'stop', newStage));
     };
 
     const handleActionClick = (newAction) => (e) => {
