@@ -1,8 +1,11 @@
+import {Box} from "@mui/material";
+import {useState} from "react";
+
 import StageControl from "./StageControl";
 import TimerControl from "./TimerControl";
 import Timer from "./Timer";
-import {Box} from "@mui/material";
-import {useState} from "react";
+import {updateActionsArray} from "../../services/actions";
+
 
 const Pomodoro = () => {
     const [stage, setStage] = useState('work');
@@ -12,14 +15,14 @@ const Pomodoro = () => {
         console.log('click stage', newStage);
         e.preventDefault();
         setStage(newStage);
-        const newActions = [...actions, {action: 'stop', time: new Date().toString()}]
+        const newActions = updateActionsArray(actions, 'stop');
         setActions(newActions);
     };
 
     const handleActionClick = (newAction) => (e) => {
         console.log('action click', newAction);
         e.preventDefault();
-        const newActions = [...actions, {action: newAction, time: new Date().toString()}]
+        const newActions = updateActionsArray(actions, newAction);
         setActions(newActions);
     }
 
