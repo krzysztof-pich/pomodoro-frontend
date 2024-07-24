@@ -6,7 +6,7 @@ describe('Actions testing', () => {
         jest.setSystemTime(new Date('2024-07-22T12:34:56Z'));
     });
 
-    test('Adding actions', () => {
+    test('Adding stop action if already stoped', () => {
         const startingTimeString = new Date('2022-01-01 00:00').toISOString();
         const actions = [
             {action: 'start', time: new Date().toISOString()},
@@ -29,4 +29,11 @@ describe('Actions testing', () => {
         expect(newActions[2].action).toEqual('start');
         expect(newActions[2].time).toEqual(new Date().toISOString());
     });
+
+    test('Adding action on empty actions', () => {
+        const newActions = updateActionsArray([], 'start');
+        expect(newActions.length).toEqual(1);
+        expect(newActions[0].action).toEqual('start');
+        expect(newActions[0].time).toEqual(new Date().toISOString());
+    })
 })
