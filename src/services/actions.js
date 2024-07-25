@@ -1,6 +1,14 @@
 /**
- * @typedef {import('../typedefs').ActionLog} ActionLog
- * @typedef {import('../typedefs').Pomodoro} Pomodoro
+ * @typedef {Object} ActionLog
+ * @property {string} action - The action taken (e.g., 'start', 'pause').
+ * @property {string} time - The time when the action was taken in ISO 8601 format.
+ * @property {string} stage - stage of pomodoro (work, short_break or long break)
+ */
+/**
+ * @typedef {Object} Pomodoro
+ * @property {string} stage - work, short_break or long_break
+ * @property {string} state - state of pomodoro (completed, abandoned, active)
+ * @property {number} duration - time spent on pomodoro in seconds
  */
 import {getActionsKeys, getStagesKeys} from "./configuration";
 
@@ -33,4 +41,18 @@ export function updateActionsArray(actions, newAction, stage) {
  * @param {ActionLog[]} actions
  * @returns {Pomodoro[]}
  */
-export function getPomodorsFromActions(actions) { return[]; }
+export function getPomodorsFromActions(actions) {
+    const pomodoros = [];
+    actions.forEach((value, index) => {
+        if (value.action === 'start') {
+            pomodoros.push({stage: value.stage, state: 'active', duration: 0});
+        }
+
+        if (!actions[index+1]) {
+            const dateStart = new Date(value.time);
+            pomodoros[pomodoros.length -1].duration = (new Date().getTime() - dateStart.getTime()) / 1000;
+        }
+    });
+
+    return pomodoros;
+}

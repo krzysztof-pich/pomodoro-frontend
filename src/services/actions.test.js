@@ -49,15 +49,16 @@ describe('Actions testing', () => {
 })
 
 describe('Pomodoro testing', () => {
+    beforeAll(() => {
+        jest.useFakeTimers('modern');
+        jest.setSystemTime(new Date('2024-07-22T12:34:56Z'));
+    });
+
     test('get pomodoros from empty actions', () => {
         expect(getPomodorsFromActions([])).toEqual([]);
     });
 
     test('get running pomodoro', () => {
-        beforeAll(() => {
-            jest.useFakeTimers('modern');
-            jest.setSystemTime(new Date('2024-07-22T12:34:56Z'));
-        });
 
         const actions = [
             {action: 'start', stage: 'work', time: '2024-07-22T12:29:56Z'}
@@ -65,7 +66,7 @@ describe('Pomodoro testing', () => {
         const pomodors = getPomodorsFromActions(actions);
         expect(pomodors).toHaveLength(1);
         expect(pomodors[0].stage).toEqual('work');
-        expect(pomodors[0].type).toEqual('active');
+        expect(pomodors[0].state).toEqual('active');
         expect(pomodors[0].duration).toEqual(5*60);
     })
 });
