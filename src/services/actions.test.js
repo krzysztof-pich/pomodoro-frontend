@@ -59,14 +59,27 @@ describe('Pomodoro testing', () => {
     });
 
     test('get running pomodoro', () => {
-
         const actions = [
             {action: 'start', stage: 'work', time: '2024-07-22T12:29:56Z'}
-        ]
-        const pomodors = getPomodorsFromActions(actions);
-        expect(pomodors).toHaveLength(1);
-        expect(pomodors[0].stage).toEqual('work');
-        expect(pomodors[0].state).toEqual('active');
-        expect(pomodors[0].duration).toEqual(5*60);
-    })
+        ];
+
+        const pomodoros = getPomodorsFromActions(actions);
+        expect(pomodoros).toHaveLength(1);
+        expect(pomodoros[0].stage).toEqual('work');
+        expect(pomodoros[0].state).toEqual('active');
+        expect(pomodoros[0].duration).toEqual(5*60);
+    });
+
+    test('get paused pomodoro', () => {
+        const actions = [
+            {action: 'start', stage: 'work', time: '2024-07-22T12:24:56Z'},
+            {action: 'pause', stage: 'work', time: '2024-07-22T12:29:56Z'}
+        ];
+
+        const pomodoros = getPomodorsFromActions(actions);
+        expect(pomodoros).toHaveLength(1);
+        expect(pomodoros[0].stage).toEqual('work');
+        expect(pomodoros[0].state).toEqual('paused');
+        expect(pomodoros[0].duration).toEqual(5*60);
+    });
 });

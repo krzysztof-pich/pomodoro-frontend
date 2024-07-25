@@ -7,7 +7,7 @@
 /**
  * @typedef {Object} Pomodoro
  * @property {string} stage - work, short_break or long_break
- * @property {string} state - state of pomodoro (completed, abandoned, active)
+ * @property {string} state - state of pomodoro (completed, abandoned, paused, active)
  * @property {number} duration - time spent on pomodoro in seconds
  */
 import {getActionsKeys, getStagesKeys} from "./configuration";
@@ -46,6 +46,12 @@ export function getPomodorsFromActions(actions) {
     actions.forEach((value, index) => {
         if (value.action === 'start') {
             pomodoros.push({stage: value.stage, state: 'active', duration: 0});
+        } else if (value.action === 'pause') {
+            const startDate = new Date(actions[index - 1].time);
+            const pauseDate = new Date(value.time);
+
+            pomodoros[pomodoros.length - 1].duration += (pauseDate.getTime() - startDate.getTime()) / 1000;
+            pomodoros[pomodoros.length - 1].state = 'paused';
         }
 
         if (!actions[index+1]) {
