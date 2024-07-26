@@ -44,25 +44,29 @@ export function updateActionsArray(actions, newAction, stage) {
 export function getPomodorsFromActions(actions) {
     const pomodoros = [];
     actions.forEach((value, index) => {
-        if (value.action === 'start') {
-            pomodoros.push({stage: value.stage, state: 'active', duration: 0});
-        } else if (value.action === 'pause') {
-            const startDate = new Date(actions[index - 1].time);
-            const pauseDate = new Date(value.time);
-
-            pomodoros[pomodoros.length - 1].duration += (pauseDate.getTime() - startDate.getTime()) / 1000;
-            pomodoros[pomodoros.length - 1].state = 'paused';
-        } else if (value.action === 'stop') {
-            let durationAdded = 0;
-            if (actions[index - 1].action !== 'pause') {
+        switch (value.action) {
+            case 'start':
+                pomodoros.push({stage: value.stage, state: 'active', duration: 0});
+                break;
+            case 'pause':
                 const startDate = new Date(actions[index - 1].time);
-                const stopDate = new Date(value.time);
+                const pauseDate = new Date(value.time);
 
-                durationAdded = (stopDate.getTime() - startDate.getTime()) / 1000;
-            }
+                pomodoros[pomodoros.length - 1].duration += (pauseDate.getTime() - startDate.getTime()) / 1000;
+                pomodoros[pomodoros.length - 1].state = 'paused';
+                break;
+            case 'stop':
+                let durationAdded = 0;
+                if (actions[index - 1].action !== 'pause') {
+                    const startDate = new Date(actions[index - 1].time);
+                    const stopDate = new Date(value.time);
 
-            pomodoros[pomodoros.length - 1].duration += durationAdded;
-            pomodoros[pomodoros.length - 1].state = 'completed';
+                    durationAdded = (stopDate.getTime() - startDate.getTime()) / 1000;
+                }
+
+                pomodoros[pomodoros.length - 1].duration += durationAdded;
+                pomodoros[pomodoros.length - 1].state = 'completed';
+                break;
         }
 
         if (!actions[index+1] && pomodoros[pomodoros.length - 1].state === 'active') {
