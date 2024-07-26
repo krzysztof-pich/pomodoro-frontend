@@ -52,9 +52,20 @@ export function getPomodorsFromActions(actions) {
 
             pomodoros[pomodoros.length - 1].duration += (pauseDate.getTime() - startDate.getTime()) / 1000;
             pomodoros[pomodoros.length - 1].state = 'paused';
+        } else if (value.action === 'stop') {
+            let durationAdded = 0;
+            if (actions[index - 1].action !== 'pause') {
+                const startDate = new Date(actions[index - 1].time);
+                const stopDate = new Date(value.time);
+
+                durationAdded = (stopDate.getTime() - startDate.getTime()) / 1000;
+            }
+
+            pomodoros[pomodoros.length - 1].duration += durationAdded;
+            pomodoros[pomodoros.length - 1].state = 'completed';
         }
 
-        if (!actions[index+1]) {
+        if (!actions[index+1] && pomodoros[pomodoros.length - 1].state === 'active') {
             const dateStart = new Date(value.time);
             pomodoros[pomodoros.length -1].duration = (new Date().getTime() - dateStart.getTime()) / 1000;
         }
