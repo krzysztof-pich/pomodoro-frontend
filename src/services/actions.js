@@ -41,7 +41,7 @@ export function updateActionsArray(actions, newAction, stage) {
  * @param {ActionLog[]} actions
  * @returns {Pomodoro[]}
  */
-export function getPomodorsFromActions(actions) {
+export function getPomodorosFromActions(actions) {
     const pomodoros = [];
     actions.forEach((value, index) => {
         switch (value.action) {
@@ -76,4 +76,17 @@ export function getPomodorsFromActions(actions) {
     });
 
     return pomodoros;
+}
+
+/**
+ *
+ * @param {ActionLog[]} actions
+ * @return {{boolean, Pomodoro}}
+ */
+export function getActivePomodoro(actions) {
+    const pomodoros = getPomodorosFromActions(actions);
+    if (!pomodoros[pomodoros.length - 1] || pomodoros[pomodoros.length - 1].state !== 'active') {
+        return false;
+    }
+    return pomodoros[pomodoros.length - 1];
 }

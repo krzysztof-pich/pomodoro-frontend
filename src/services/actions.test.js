@@ -1,4 +1,4 @@
-import {getPomodorsFromActions, updateActionsArray} from "./actions";
+import {getActivePomodoro, getPomodorosFromActions, updateActionsArray} from "./actions";
 
 describe('Actions testing', () => {
     beforeAll(() => {
@@ -55,7 +55,7 @@ describe('Pomodoro testing', () => {
     });
 
     test('get pomodoros from empty actions', () => {
-        expect(getPomodorsFromActions([])).toEqual([]);
+        expect(getPomodorosFromActions([])).toEqual([]);
     });
 
     test('get running pomodoro', () => {
@@ -63,7 +63,7 @@ describe('Pomodoro testing', () => {
             {action: 'start', stage: 'work', time: '2024-07-22T12:29:56Z'}
         ];
 
-        const pomodoros = getPomodorsFromActions(actions);
+        const pomodoros = getPomodorosFromActions(actions);
         expect(pomodoros).toHaveLength(1);
         expect(pomodoros[0].stage).toEqual('work');
         expect(pomodoros[0].state).toEqual('active');
@@ -76,7 +76,7 @@ describe('Pomodoro testing', () => {
             {action: 'pause', stage: 'work', time: '2024-07-22T12:29:56Z'}
         ];
 
-        const pomodoros = getPomodorsFromActions(actions);
+        const pomodoros = getPomodorosFromActions(actions);
         expect(pomodoros).toHaveLength(1);
         expect(pomodoros[0].stage).toEqual('work');
         expect(pomodoros[0].state).toEqual('paused');
@@ -90,7 +90,7 @@ describe('Pomodoro testing', () => {
             {action: 'stop', stage: 'work', time: '2024-07-22T12:29:56Z'},
         ];
 
-        const pomodoros = getPomodorsFromActions(actions);
+        const pomodoros = getPomodorosFromActions(actions);
         expect(pomodoros).toHaveLength(1);
         expect(pomodoros[0]).toEqual({stage: 'work', state: 'completed', duration: 20*60})
     });
@@ -102,7 +102,7 @@ describe('Pomodoro testing', () => {
             {action: 'start', stage: 'short_break', time: '2024-07-22T12:29:56Z'},
         ];
 
-        const pomodoros = getPomodorsFromActions(actions);
+        const pomodoros = getPomodorosFromActions(actions);
         expect(pomodoros).toHaveLength(2);
         expect(pomodoros[0]).toEqual({stage: 'work', state: 'completed', duration: 25*60})
         expect(pomodoros[1]).toEqual({stage: 'short_break', state: 'active', duration: 5*60})
@@ -118,10 +118,43 @@ describe('Pomodoro testing', () => {
             {action: 'stop', stage: 'long_break', time: '2024-07-22T12:29:56Z'},
         ];
 
-        const pomodoros = getPomodorsFromActions(actions);
+        const pomodoros = getPomodorosFromActions(actions);
         expect(pomodoros).toHaveLength(3);
         expect(pomodoros[0]).toEqual({stage: 'work', state: 'completed', duration: 24*60})
         expect(pomodoros[1]).toEqual({stage: 'short_break', state: 'completed', duration: 5*60})
         expect(pomodoros[2]).toEqual({stage: 'long_break', state: 'completed', duration: 15*60})
     })
 });
+
+describe('Active pomodoro testing', () => {
+    beforeAll(() => {
+        jest.useFakeTimers('modern');
+        jest.setSystemTime(new Date('2024-07-22T12:34:56Z'));
+    });
+
+    test('get pomodoro with empty actions', () => {
+        const pomodoro = getActivePomodoro([]);
+        expect(pomodoro).toEqual(false);
+    });
+
+    test('get active pomodoro', () => {
+        const actions = [
+            {action: 'start', stage: 'work', time: '2024-07-22T12:00:56Z'},
+            {action: 'stop', stage: 'work', time: '2024-07-22T12:25:56Z'},
+            {action: 'start', stage: 'short_break', time: '2024-07-22T12:29:56Z'},
+        ];
+
+        const pomodoro = getActivePomodoro(actions);
+        expect(pomodoro).toEqual({stage: 'short_break', state: 'active', duration: 5*60})
+    });
+
+    test('all pomodoros are finished', () => {
+        const actions = [
+            {action: 'start', stage: 'work', time: '2024-07-22T12:00:56Z'},
+            {action: 'stop', stage: 'work', time: '2024-07-22T12:25:56Z'},
+        ];
+
+        const pomodoro = getActivePomodoro(actions);
+        expect(pomodoro).toEqual(false);
+    });
+})
