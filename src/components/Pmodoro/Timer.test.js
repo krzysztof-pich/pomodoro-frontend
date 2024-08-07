@@ -53,13 +53,13 @@ describe('<Timer /> timer rendering on different stages', () => {
     });
 });
 
-describe('<Timer /> timer started and counting down - 20:01 left', () => {
+describe('<Timer /> timer started and counting down', () => {
     beforeAll(() => {
         jest.useFakeTimers('modern');
         jest.setSystemTime(new Date('2024-07-22T12:34:56Z'));
     });
 
-    test('render started work timer', () => {
+    test('20:01 left on work', () => {
         getWorkTimeInMinutes.mockReturnValue(25);
 
         render(
@@ -72,4 +72,32 @@ describe('<Timer /> timer started and counting down - 20:01 left', () => {
         const timer = screen.getByText('20:01');
         expect(timer).toBeInTheDocument();
     });
+
+    test('4:58 left on short break', () => {
+        getShortBreakTimeInMinutes.mockReturnValue(5);
+
+        render(
+            <Timer
+                stage={'short_break'}
+                actions={[{action: 'start', stage: 'short_break', time: '2024-07-22T12:34:54Z'}]}
+            />
+        );
+
+        const timer = screen.getByText('4:58');
+        expect(timer).toBeInTheDocument();
+    });
+
+    test('-4:33 overtime on long break', () => {
+        getLongBreakTimeInMinutes.mockReturnValue(15);
+
+        render(
+            <Timer
+                stage={'long_break'}
+                actions={[{action: 'start', stage: 'long_break', time: '2024-07-22T12:15:23Z'}]}
+            />
+        );
+
+        const timer = screen.getByText('-4:34');
+        expect(timer).toBeInTheDocument();
+    })
 })

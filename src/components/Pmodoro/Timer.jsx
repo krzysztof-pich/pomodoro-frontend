@@ -35,9 +35,15 @@ const Timer = ({stage, actions}) => {
             pomodoroTimeSeconds -= activePomodoro.duration;
         }
 
+        let sign = '';
+        if (pomodoroTimeSeconds < 0) {
+            sign = '-';
+            pomodoroTimeSeconds = Math.abs(pomodoroTimeSeconds) + 1;
+        }
+
         const minutesLeft = Math.floor(pomodoroTimeSeconds / 60).toString();
         const secondsLeft = pomodoroTimeSeconds % 60 < 10 ? '0' + pomodoroTimeSeconds % 60 : pomodoroTimeSeconds % 60;
-        return minutesLeft + ':' + secondsLeft;
+        return sign + minutesLeft + ':' + secondsLeft;
 
     };
 
