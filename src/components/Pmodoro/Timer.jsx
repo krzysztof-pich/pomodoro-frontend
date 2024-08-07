@@ -3,7 +3,7 @@
  */
 
 import {getWorkTimeInMinutes, getShortBreakTimeInMinutes, getLongBreakTimeInMinutes} from "../../services/configuration";
-
+import {getActivePomodoro} from "../../services/actions";
 
 
 /**
@@ -15,21 +15,29 @@ import {getWorkTimeInMinutes, getShortBreakTimeInMinutes, getLongBreakTimeInMinu
  */
 const Timer = ({stage, actions}) => {
     const getTimeLeft = () => {
-        if (actions.length > 0) {
-            const lastElement = actions[actions.length - 1];
-        }
-
+        let pomodoroTimeSeconds = 0;
         switch (stage) {
             case 'work':
-                return getWorkTimeInMinutes() + ':00';
+                pomodoroTimeSeconds =  getWorkTimeInMinutes() * 60;
+                break;
             case 'long_break':
-                return getLongBreakTimeInMinutes() + ':00';
+                pomodoroTimeSeconds = getLongBreakTimeInMinutes() * 60;
+                break;
             case 'short_break':
-                return getShortBreakTimeInMinutes() + ':00';
+                pomodoroTimeSeconds = getShortBreakTimeInMinutes() * 60;
+                break;
             default:
                 throw new Error('Stage is not know');
         }
 
+        const activePomodoro = getActivePomodoro(actions);
+        if (activePomodoro) {
+            pomodoroTimeSeconds -= activePomodoro.duration;
+        }
+
+        const minutesLeft = Math.floor(pomodoroTimeSeconds / 60).toString();
+        const secondsLeft = pomodoroTimeSeconds % 60 < 10 ? '0' + pomodoroTimeSeconds % 60 : pomodoroTimeSeconds % 60;
+        return minutesLeft + ':' + secondsLeft;
 
     };
 
