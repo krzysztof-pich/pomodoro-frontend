@@ -123,7 +123,15 @@ describe('Pomodoro testing', () => {
         expect(pomodoros[0]).toEqual({stage: 'work', state: 'completed', duration: 24*60})
         expect(pomodoros[1]).toEqual({stage: 'short_break', state: 'completed', duration: 5*60})
         expect(pomodoros[2]).toEqual({stage: 'long_break', state: 'completed', duration: 15*60})
-    })
+    });
+
+    test('stop action is a first one', () => {
+        const actions = [
+            {action: 'stop', stage: 'work', time: '2024-07-22T11:54:56Z'},
+        ];
+
+        expect(getPomodorosFromActions(actions)).toEqual([]);
+    });
 });
 
 describe('Active pomodoro testing', () => {

@@ -4,6 +4,7 @@
 
 import {getWorkTimeInMinutes, getShortBreakTimeInMinutes, getLongBreakTimeInMinutes} from "../../services/configuration";
 import {getActivePomodoro} from "../../services/actions";
+import {useEffect, useState} from "react";
 
 
 /**
@@ -14,6 +15,15 @@ import {getActivePomodoro} from "../../services/actions";
  * @constructor
  */
 const Timer = ({stage, actions}) => {
+    const [time, setTime] = useState(Date.now());
+
+    useEffect(() => {
+        const interval = setInterval(() => setTime(Date.now()), 1000);
+        return () => {
+            clearInterval(interval);
+        }
+    }, []);
+
     const getTimeLeft = () => {
         let pomodoroTimeSeconds = 0;
         switch (stage) {
@@ -33,6 +43,7 @@ const Timer = ({stage, actions}) => {
         const activePomodoro = getActivePomodoro(actions);
         if (activePomodoro) {
             pomodoroTimeSeconds -= activePomodoro.duration;
+            pomodoroTimeSeconds = Math.round(pomodoroTimeSeconds);
         }
 
         let sign = '';
