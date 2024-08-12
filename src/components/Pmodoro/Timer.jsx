@@ -3,7 +3,6 @@
  */
 
 import {useEffect, useState} from "react";
-import ReactNotifications from "react-browser-notifications";
 import {getWorkTimeInMinutes, getShortBreakTimeInMinutes, getLongBreakTimeInMinutes} from "../../services/configuration";
 import {getActivePomodoro} from "../../services/actions";
 
