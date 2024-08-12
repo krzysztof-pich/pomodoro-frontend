@@ -97,7 +97,7 @@ describe('<Timer /> timer started and counting down', () => {
             />
         );
 
-        const timer = screen.getByText('-4:34');
+        const timer = screen.getByText('-4:33');
         expect(timer).toBeInTheDocument();
     })
 })

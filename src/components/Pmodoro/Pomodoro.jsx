@@ -1,15 +1,30 @@
 import {Box} from "@mui/material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 import StageControl from "./StageControl";
 import TimerControl from "./TimerControl";
 import Timer from "./Timer";
 import {updateActionsArray} from "../../services/actions";
 
+function requestNotificationPermission() {
+    if ('Notification' in window) {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                console.log('permission granted');
+            } else {
+                console.log('permission declined');
+            }
+        });
+    }
+}
 
 const Pomodoro = () => {
     const [stage, setStage] = useState('work');
     const [actions, setActions] = useState([]);
+
+    useEffect(() => {
+        requestNotificationPermission();
+    }, []);
 
     const handleStageClick = (newStage) => (e) => {
         e.preventDefault();

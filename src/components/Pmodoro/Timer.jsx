@@ -2,10 +2,18 @@
  * @typedef {import('../../typedefs').ActionLog} ActionLog
  */
 
+import {useEffect, useState} from "react";
+import ReactNotifications from "react-browser-notifications";
 import {getWorkTimeInMinutes, getShortBreakTimeInMinutes, getLongBreakTimeInMinutes} from "../../services/configuration";
 import {getActivePomodoro} from "../../services/actions";
-import {useEffect, useState} from "react";
 
+
+function showNotification(title, options) {
+    if ('Notification' in window && Notification.permission === 'granted') {
+        console.log('execute show notification');
+        new Notification(title, options);
+    }
+}
 
 /**
  *
@@ -49,7 +57,11 @@ const Timer = ({stage, actions}) => {
         let sign = '';
         if (pomodoroTimeSeconds < 0) {
             sign = '-';
-            pomodoroTimeSeconds = Math.abs(pomodoroTimeSeconds) + 1;
+            pomodoroTimeSeconds = Math.abs(pomodoroTimeSeconds);
+        }
+
+        if (Math.floor(pomodoroTimeSeconds) === 0) {
+            showNotification(stage, {body: 'Session finished'});
         }
 
         const minutesLeft = Math.floor(pomodoroTimeSeconds / 60).toString();
