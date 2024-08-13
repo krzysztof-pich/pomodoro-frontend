@@ -39,7 +39,7 @@ const Pomodoro = () => {
                 stage={stage}
                 stageButtonClick={handleStageClick}
             />
-            <StageCounter />
+            <StageCounter actions={actions} />
             <Timer
                 stage={stage}
                 actions={actions}
