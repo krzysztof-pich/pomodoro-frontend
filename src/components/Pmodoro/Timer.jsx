@@ -10,12 +10,11 @@ import {
     getStageName
 } from "../../services/configuration";
 import {getActivePomodoro} from "../../services/actions";
+import {requestPermissions} from "../../services/notifications";
 
 
 function showNotification(title, options) {
-    if ('Notification' in window && Notification.permission === 'granted') {
-        new Notification(title, options);
-    }
+    requestPermissions();
 }
 
 /**
@@ -64,7 +63,7 @@ const Timer = ({stage, actions}) => {
         }
 
         if (Math.floor(pomodoroTimeSeconds) === 0) {
-            showNotification(getStageName(stage), {body: 'Session finished'});
+            showNotification(getStageName(stage), 'Session finished');
         }
 
         const minutesLeft = Math.floor(pomodoroTimeSeconds / 60).toString();

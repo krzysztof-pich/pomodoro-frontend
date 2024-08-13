@@ -5,17 +5,10 @@ import StageControl from "./StageControl";
 import TimerControl from "./TimerControl";
 import Timer from "./Timer";
 import {updateActionsArray} from "../../services/actions";
+import {requestPermissions} from "../../services/notifications";
 
 function requestNotificationPermission() {
-    if ('Notification' in window) {
-        Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-                console.log('permission granted');
-            } else {
-                console.log('permission declined');
-            }
-        });
-    }
+    requestPermissions();
 }
 
 const Pomodoro = () => {
