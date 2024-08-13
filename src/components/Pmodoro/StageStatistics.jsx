@@ -8,8 +8,8 @@
  * @returns {JSX.Element}
  * @constructor
  */
-const StageCounter = ({actions}) => {
+const StageStatistics = ({actions}) => {
     return <p>(P)(P)(P)(P)(LB)</p>
 }
 
-export default StageCounter
+export default StageStatistics

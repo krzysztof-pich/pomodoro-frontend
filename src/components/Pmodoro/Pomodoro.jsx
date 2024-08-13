@@ -6,7 +6,7 @@ import TimerControl from "./TimerControl";
 import Timer from "./Timer";
 import {updateActionsArray} from "../../services/actions";
 import {requestPermissions} from "../../services/notifications";
-import StageCounter from "./StageCounter";
+import StageStatistics from "./StageStatistics";
 
 function requestNotificationPermission() {
     requestPermissions();
@@ -39,7 +39,7 @@ const Pomodoro = () => {
                 stage={stage}
                 stageButtonClick={handleStageClick}
             />
-            <StageCounter actions={actions} />
+            <StageStatistics actions={actions} />
             <Timer
                 stage={stage}
                 actions={actions}
