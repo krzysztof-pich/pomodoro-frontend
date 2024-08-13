@@ -31,3 +31,16 @@ export function getStagesKeys() {
     return getStages().map(item => item.name);
 }
 
+/**
+ *
+ * @param {string} key
+ * @returns string
+ */
+export function getStageName(key) {
+
+    const stageObject = getStages().find((element) => element.name === key);
+    if (!stageObject) {
+        throw Error('Invalid argument');
+    }
+    return stageObject.label;
+}

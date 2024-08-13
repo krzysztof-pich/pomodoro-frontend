@@ -3,13 +3,17 @@
  */
 
 import {useEffect, useState} from "react";
-import {getWorkTimeInMinutes, getShortBreakTimeInMinutes, getLongBreakTimeInMinutes} from "../../services/configuration";
+import {
+    getWorkTimeInMinutes,
+    getShortBreakTimeInMinutes,
+    getLongBreakTimeInMinutes,
+    getStageName
+} from "../../services/configuration";
 import {getActivePomodoro} from "../../services/actions";
 
 
 function showNotification(title, options) {
     if ('Notification' in window && Notification.permission === 'granted') {
-        console.log('execute show notification');
         new Notification(title, options);
     }
 }
@@ -60,7 +64,7 @@ const Timer = ({stage, actions}) => {
         }
 
         if (Math.floor(pomodoroTimeSeconds) === 0) {
-            showNotification(stage, {body: 'Session finished'});
+            showNotification(getStageName(stage), {body: 'Session finished'});
         }
 
         const minutesLeft = Math.floor(pomodoroTimeSeconds / 60).toString();
