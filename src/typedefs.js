@@ -1,4 +1,3 @@
-
 /**
  * @typedef {Object} ActionLog
  * @property {string} action - The action taken (e.g., 'start', 'pause').
