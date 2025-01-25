@@ -12,6 +12,8 @@
  */
 import {getActionsKeys, getStagesKeys} from "./configuration";
 
+const activeActions = ['active', 'paused'];
+
 /**
  * @param {ActionLog[]} actions
  * @param {string} newAction
@@ -43,16 +45,23 @@ export function updateActionsArray(actions, newAction, stage) {
  */
 export function getPomodorosFromActions(actions) {
     const pomodoros = [];
+    let previousPausedDuration = 0;
+
     actions.forEach((value, index) => {
         switch (value.action) {
             case 'start':
-                pomodoros.push({stage: value.stage, state: 'active', duration: 0});
+                if (index === 0 || actions[index - 1].action === 'stop') {
+                    pomodoros.push({stage: value.stage, state: 'active', duration: 0});
+                } else if (actions[index - 1].action === 'pause') {
+                    pomodoros[pomodoros.length - 1].state = 'active';
+                }
                 break;
             case 'pause':
                 const startDate = new Date(actions[index - 1].time);
                 const pauseDate = new Date(value.time);
 
                 pomodoros[pomodoros.length - 1].duration += (pauseDate.getTime() - startDate.getTime()) / 1000;
+                previousPausedDuration = pomodoros[pomodoros.length - 1].duration;
                 pomodoros[pomodoros.length - 1].state = 'paused';
                 break;
             case 'stop':
@@ -71,9 +80,14 @@ export function getPomodorosFromActions(actions) {
                 break;
         }
 
-        if (!actions[index+1] && pomodoros[pomodoros.length -1] && pomodoros[pomodoros.length - 1].state === 'active') {
-            const dateStart = new Date(value.time);
-            pomodoros[pomodoros.length -1].duration = (new Date().getTime() - dateStart.getTime()) / 1000;
+        if (!actions[index+1] && pomodoros[pomodoros.length -1]) {
+            if (pomodoros[pomodoros.length - 1].state === 'active') {
+                const lastStartDate = new Date(value.time);
+                const currentDuration = (new Date().getTime() - lastStartDate.getTime()) / 1000;
+                pomodoros[pomodoros.length -1].duration = previousPausedDuration + currentDuration;
+            } else if (pomodoros[pomodoros.length - 1].state === 'paused') {
+                pomodoros[pomodoros.length - 1].duration = 5 * 60;
+            }
         }
     });
 
@@ -87,7 +101,8 @@ export function getPomodorosFromActions(actions) {
  */
 export function getActivePomodoro(actions) {
     const pomodoros = getPomodorosFromActions(actions);
-    if (!pomodoros[pomodoros.length - 1] || pomodoros[pomodoros.length - 1].state !== 'active') {
+
+    if (!pomodoros[pomodoros.length - 1] || !activeActions.includes(pomodoros[pomodoros.length - 1].state)) {
         return false;
     }
     return pomodoros[pomodoros.length - 1];

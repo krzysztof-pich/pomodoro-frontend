@@ -165,4 +165,26 @@ describe('Active pomodoro testing', () => {
         const pomodoro = getActivePomodoro(actions);
         expect(pomodoro).toEqual(false);
     });
+
+    test('pomodoro is paused', () => {
+        const actions = [
+            {action: 'start', stage: 'work', time: '2024-07-22T12:00:00Z'},
+            {action: 'pause', stage: 'work', time: '2024-07-22T12:25:00Z'},
+        ];
+
+        const pomodoro = getActivePomodoro(actions);
+        expect(pomodoro).toEqual({stage: 'work', state: 'paused', duration: 5*60})
+    });
+
+    test('pomodoro was paused', () => {
+        const actions = [
+            {action: 'start', stage: 'work', time: '2024-07-22T12:29:56Z'},
+            {action: 'pause', stage: 'work', time: '2024-07-22T12:31:56Z'},
+            {action: 'start', stage: 'work', time: '2024-07-22T12:32:56Z'},
+
+        ];
+
+        const pomodoro = getActivePomodoro(actions);
+        expect(pomodoro).toEqual({stage: 'work', state: 'active', duration: 4*60})
+    })
 })

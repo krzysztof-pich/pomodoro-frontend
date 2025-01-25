@@ -3,14 +3,7 @@
  */
 
 import {useEffect, useState} from "react";
-import {
-    getWorkTimeInMinutes,
-    getShortBreakTimeInMinutes,
-    getLongBreakTimeInMinutes,
-    getStageName
-} from "../../services/configuration";
-import {getActivePomodoro} from "../../services/actions";
-import {triggerNotification} from "../../services/notifications";
+import {getTimeLeft} from "../../services/progress";
 /**
  *
  * @param {string} stage
@@ -28,45 +21,7 @@ const Timer = ({stage, actions}) => {
         }
     }, []);
 
-    const getTimeLeft = () => {
-        let pomodoroTimeSeconds = 0;
-        switch (stage) {
-            case 'work':
-                pomodoroTimeSeconds =  getWorkTimeInMinutes() * 60;
-                break;
-            case 'long_break':
-                pomodoroTimeSeconds = getLongBreakTimeInMinutes() * 60;
-                break;
-            case 'short_break':
-                pomodoroTimeSeconds = getShortBreakTimeInMinutes() * 60;
-                break;
-            default:
-                throw new Error('Stage is not know');
-        }
-
-        const activePomodoro = getActivePomodoro(actions);
-        if (activePomodoro) {
-            pomodoroTimeSeconds -= activePomodoro.duration;
-            pomodoroTimeSeconds = Math.round(pomodoroTimeSeconds);
-        }
-
-        let sign = '';
-        if (pomodoroTimeSeconds < 0) {
-            sign = '-';
-            pomodoroTimeSeconds = Math.abs(pomodoroTimeSeconds);
-        }
-
-        if (Math.floor(pomodoroTimeSeconds) === 0) {
-            triggerNotification(getStageName(stage), 'Session finished');
-        }
-
-        const minutesLeft = Math.floor(pomodoroTimeSeconds / 60).toString();
-        const secondsLeft = pomodoroTimeSeconds % 60 < 10 ? '0' + pomodoroTimeSeconds % 60 : pomodoroTimeSeconds % 60;
-        return sign + minutesLeft + ':' + secondsLeft;
-
-    };
-
-    return <p style={{fontSize: "45px"}}>{getTimeLeft()}</p>
+    return <p style={{fontSize: "45px"}}>{getTimeLeft(stage, actions)}</p>
 }
 
 export default Timer
